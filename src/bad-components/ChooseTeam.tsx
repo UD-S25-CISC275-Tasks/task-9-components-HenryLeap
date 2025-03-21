@@ -10,24 +10,23 @@ const PEOPLE = [
     "Margaret Hamilton",
 ];
 
+function chooseMember(
+    team: string[],
+    setTeam: (newValue: string[]) => void,
+    newMember: string,
+) {
+    if (!team.includes(newMember)) {
+        setTeam([...team, newMember]);
+    }
+}
+
+function clearTeam(setTeam: (newValue: string[]) => void) {
+    setTeam([]);
+}
+
 export function ChooseTeam(): React.JSX.Element {
-    const [allOptions, setAllOptions] = useState<string[]>(PEOPLE);
+    const [allOptions] = useState<string[]>(PEOPLE);
     const [team, setTeam] = useState<string[]>([]);
-
-    function chooseMember() {
-        /*
-        if (!team.includes(newMember)) {
-            team.push(newMember);
-        }
-        */
-    }
-
-    function clearTeam() {
-        /*
-        team = [];
-        */
-    }
-
     return (
         <div>
             <h3>Choose Team</h3>
@@ -36,7 +35,12 @@ export function ChooseTeam(): React.JSX.Element {
                     {allOptions.map((option: string) => (
                         <div key={option} style={{ marginBottom: "4px" }}>
                             Add{" "}
-                            <Button onClick={chooseMember} size="sm">
+                            <Button
+                                onClick={() => {
+                                    chooseMember(team, setTeam, option);
+                                }}
+                                size="sm"
+                            >
                                 {option}
                             </Button>
                         </div>
@@ -47,7 +51,13 @@ export function ChooseTeam(): React.JSX.Element {
                     {team.map((member: string) => (
                         <li key={member}>{member}</li>
                     ))}
-                    <Button onClick={clearTeam}>Clear Team</Button>
+                    <Button
+                        onClick={() => {
+                            clearTeam(setTeam);
+                        }}
+                    >
+                        Clear Team
+                    </Button>
                 </Col>
             </Row>
         </div>
